@@ -8,7 +8,7 @@
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
-  <!-- MindAR para seguimiento de imágenes -->
+  <!-- MindAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.7/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
@@ -34,17 +34,17 @@
   <div id="mensaje">Apunta la cámara a la imagen del robot 📸</div>
 
   <a-scene
-    mindar-image="imageTargetSrc: ./RobotHD3D.mind;"
+    mindar-image="imageTargetSrc: RobotHD3D.mind;"
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights: true"
     vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
+    device-orientation-permission-ui="enabled: true"
     embedded
   >
     <a-assets>
       <video
         id="miVideo"
-        src="./Download.mp4"
+        src="Download.mp4"
         preload="auto"
         playsinline
         webkit-playsinline
@@ -58,7 +58,6 @@
       <a-video
         src="#miVideo"
         position="0 0 0"
-        rotation="0 0 0"
         width="1"
         height="0.56"
       ></a-video>
@@ -85,3 +84,5 @@
   </script>
 </body>
 </html>
+
+
