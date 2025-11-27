@@ -1,88 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HD3D AR Demo</title>
+  <head>
+    <meta charset="UTF-8">
+    <title>HD3D AR Demo</title>
 
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- MindAR + A-Frame -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.0/dist/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar/dist/mindar-image-aframe.prod.js"></script>
 
-  <!-- MindAR -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.7/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      #loading {
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #000; color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; z-index: 10;
+      }
+    </style>
+  </head>
 
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: black;
-    }
-    #mensaje {
-      position: fixed;
-      top: 10px;
-      width: 100%;
-      text-align: center;
-      color: white;
-      font-size: 18px;
-      z-index: 10;
-      text-shadow: 0px 0px 5px black;
-    }
-  </style>
-</head>
+  <body>
+    <div id="loading">Cargando cámara...</div>
 
-<body>
-  <div id="mensaje">Apunta la cámara a la imagen del robot 📸</div>
+    <a-scene mindar-image="imageTargetSrc: ./RobotHD3D.mind;" 
+             color-space="sRGB"
+             renderer="colorManagement: true, physicallyCorrectLights"
+             vr-mode-ui="enabled: false"
+             device-orientation-permission-ui="enabled: true">
 
-  <a-scene
-    mindar-image="imageTargetSrc: RobotHD3D.mind;"
-    color-space="sRGB"
-    renderer="colorManagement: true, physicallyCorrectLights: true"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: true"
-    embedded
-  >
-    <a-assets>
-      <video
-        id="miVideo"
-        src="Download.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous"
-      ></video>
-    </a-assets>
+      <a-assets>
+        <!-- Video con autoplay -->
+        <video id="videoHD3D"
+               src="https://hernandiazfernandez-debug.github.io/ar-demo/Download.mp4"
+               autoplay
+               muted
+               loop
+               playsinline>
+        </video>
+      </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity mindar-image-target="targetIndex: 0" id="marcador">
-      <a-video
-        src="#miVideo"
-        position="0 0 0"
-        width="1"
-        height="0.56"
-      ></a-video>
-    </a-entity>
-  </a-scene>
+      <!-- Cuando detecta la imagen, muestra el video -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-video src="#videoHD3D" width="1.2" height="0.7" position="0 0 0"></a-video>
+      </a-entity>
 
-  <script>
-    const marcador = document.querySelector("#marcador");
-    const video = document.querySelector("#miVideo");
+    </a-scene>
 
-    document.body.addEventListener("click", () => {
-      video.muted = false;
-      video.play().catch(() => {});
-    });
-
-    marcador.addEventListener("targetFound", () => {
-      video.currentTime = 0;
-      video.play().catch(() => {});
-    });
-
-    marcador.addEventListener("targetLost", () => {
-      video.pause();
-    });
-  </script>
-</body>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          document.getElementById("loading").style.display = "none";
+        }, 2000);
+      });
+    </script>
+  </body>
 </html>
 
 
